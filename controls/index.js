@@ -81,13 +81,53 @@ function capNhatThongTin() {
   renderGiaoDien();
 }
 
-function filterNhanVien(arrNhanVien) {
-  var data1 = arrNhanVien;
-  console.log(data1);
-  
-
-}
-
 function checkNhanVien() {
+  console.log(arrNhanVien);
+  var obj = { 'arr': arrNhanVien };
+  var txtSearch = document.getElementById('searchName').value;
+  var filterArray = obj.arr.filter(function (e) {
+    if (txtSearch == "Nhân viên xuất sắc") {
+      return e.gioLam >= 192;
+    } else if (txtSearch == "Nhân viên giỏi") {
+      return e.gioLam >= 176 && e.gioLam < 192;
+    } else if (txtSearch == "Nhân viên khá") {
+      return e.gioLam >= 160 && e.gioLam < 176;
+    } else if (txtSearch == "Nhân viên trung bình") {
+      return e.gioLam < 160;
+    }
+  }
+  );
+  console.log(filterArray);
 
+  var content = "";
+  for (i = 0; i < filterArray.length; i++) {
+    var nhanVien = filterArray[i];
+    console.log(nhanVien);
+    var tongLuong = nhanVien.tongLuong();
+    var xepLoai = nhanVien.xepLoai();
+    content += `
+        <tr>
+        <td>${nhanVien.taiKhoan}</td>
+        <td>${nhanVien.tenNhanVien}</td>
+        <td>${nhanVien.email}</td>
+        <td>${nhanVien.ngayLam}</td>
+        <td>${nhanVien.chucVu}</td>
+        <td>${tongLuong}</td>
+        <td>${xepLoai}</td>
+        <td>
+          <button onclick="suaNhanVien('${nhanVien.taiKhoan
+      }')" class="btn btn-warning" data-toggle="modal"
+      data-target="#myModal">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button onclick="xoaNhanVien('${nhanVien.taiKhoan
+      }')" class="btn btn-danger">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+        </tr>
+        `;
+  };
+
+  document.getElementById("tableDanhSach").innerHTML = content;
 }
